@@ -24,5 +24,5 @@ def on_message(data):
 # def on_message(data):
 #     print('Price Data ', data)
 
-sio.connect('http://127.0.0.1:5000')
+sio.connect('http://192.168.0.15:5000')
 sio.emit('message', {'now': 'EURUSD'})
