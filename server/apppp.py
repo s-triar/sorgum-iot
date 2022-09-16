@@ -12,9 +12,11 @@ app = Flask(__name__)
 def on_message(data):
     print('HandShake', data)
     sio.emit('message', {'now': 'EURUSD'})
-@socketio.on('message')
-def handle_message_event(msg):
-    print('received msg from {} : {}'.format(request.remote_addr, str(msg)))
+@sio.on('message')
+def handle_message_event(msg,ggg):
+    print("GGGG",ggg)
+    sio.emit("10","ini data dari server ws")
+    #print('received msg from {} : {}'.format(request.remote_addr, str(msg)))
 
 my_wsgi = socketio.WSGIApp(sio,app)
 app = socketio.Middleware(sio, my_wsgi)
