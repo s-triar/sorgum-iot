@@ -7,7 +7,7 @@ logger.setLevel(logging.INFO)
 app = Flask(__name__)
 app.logger.setLevel(logging.INFO)
 app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app=app, cors_allowed_origins="*", async_mode='eventlet',cors_credentials=False)
+socketio = SocketIO(app=app, cors_allowed_origins="*", async_mode='eventlet')
 
 @socketio.on('message')
 def handle_message_event(msg):
