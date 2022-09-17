@@ -36,6 +36,7 @@ int16_t phSensor(){
 const int pinSoilMoisture = 34;
 int getSoilMoistureNoModul(){
   int adcValue = analogRead(pinSoilMoisture);
+ 
   return adcValue;
 }
 
@@ -43,11 +44,12 @@ const int pinPh = 35;
 float getPhNoModul(){
   int adcValue = analogRead(pinPh);
   
+  //Hasil Kalibrasi regresi linear 
   float ph = 4.500*adcValue + 0.5833;
   
-  float voltValue = ((adcValue * 3.3) / 4095);
+  float voltValue = ((adcValue * 3.3) / 4095);//Nilai Voltage
  
-  return ph;
+  return adcValue ;
 }
 
 
