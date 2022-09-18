@@ -2,10 +2,12 @@ import cv2
 from threading import Thread
 from signalrcore.hub_connection_builder import HubConnectionBuilder
 import logging
+import base64
 
 global CAMERA_MUST_RUN
 CAMERA_MUST_RUN=False
-
+global VIDEO_CAP
+VIDEO_CAP = cv2.VideoCapture(0)
 
 class SlaveCamera:
     def __init__(self):
@@ -13,10 +15,14 @@ class SlaveCamera:
         
     def run(self):
         global CAMERA_MUST_RUN
-
+        global VIDEO_CAP
         while(CAMERA_MUST_RUN):
-            pass
+            
             # TODO post image to server
+            ret, frame = VIDEO_CAP.read()
+            frame = cv2.resize(frame,(128,128))
+            retval, buffer = cv2.imencode('.jpg', frame)
+            jpg_as_text = base64.b64encode(buffer)
 
 def buildWebSocket():
     server_url = "https://37ca-140-0-40-217.ap.ngrok.io/Stream"
