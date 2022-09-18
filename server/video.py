@@ -3,6 +3,7 @@ from threading import Thread
 from signalrcore.hub_connection_builder import HubConnectionBuilder
 import logging
 import base64
+import requests 
 
 global CAMERA_MUST_RUN
 CAMERA_MUST_RUN=False
@@ -23,6 +24,8 @@ class SlaveCamera:
             frame = cv2.resize(frame,(128,128))
             retval, buffer = cv2.imencode('.jpg', frame)
             jpg_as_text = base64.b64encode(buffer)
+            headers = {'Content-Type': 'application/octet-stream'}
+            resp = requests.post(endpoint, data=buffer,headers=headers)
 
 def buildWebSocket():
     server_url = "https://37ca-140-0-40-217.ap.ngrok.io/Stream"
