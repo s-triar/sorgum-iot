@@ -49,9 +49,9 @@ def disconnect(sid):
     print('disconnect ', sid)
     del slaves[sid]
     
-@sio.on('handshake')
-def on_message(sid,data):
-    print('HandShake', sid,data)
+@sio.on("handshake")
+def handshake(dd,sid,data):
+    print('HandShake', dd,sid,data)
     slaves[sid]=data
     # sio.emit('message', {'now': 'EURUSD'})
 @sio.on('message')
