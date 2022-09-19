@@ -58,8 +58,8 @@ def handle_message_event(msg,ggg):
 def connect(sid, environ, auth):
     print("I'm connected!", sid, environ)
 @sio.event
-def disconnect(sid, data):
-    print("I'm disconnected!",sid, data)
+def disconnect(sid):
+    print("I'm disconnected!",sid)
 my_wsgi = socketio.WSGIApp(sio,app)
 app = socketio.Middleware(sio, my_wsgi)
 
