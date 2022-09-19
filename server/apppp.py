@@ -38,10 +38,11 @@ app = Flask(__name__)
 
 # this generates the uwsgi-runnable application
 @sio.event
-def connect(sid, environ, auth):
+def connect(sid, environ, auth, data):
     print('connect ', sid)
     print('environ',environ)
     print('auth',auth)
+    print('data',data)
 
 @sio.event
 def disconnect(sid):
