@@ -10,7 +10,7 @@ from signalrcore.hub_connection_builder import HubConnectionBuilder
 
 URLSERVER="https://412d-140-0-40-217.ngrok.io"
 IDMINIPC=1
-
+slaves={}
 # server_url = URLSERVER+"/DataParamSensorHub"
 # handler = logging.StreamHandler()
 # handler.setLevel(logging.DEBUG)
@@ -38,18 +38,21 @@ app = Flask(__name__)
 
 # this generates the uwsgi-runnable application
 @sio.event
-def connect(sid, environ, auth, data):
+def connect(sid, environ, auth):
     print('connect ', sid)
     print('environ',environ)
     print('auth',auth)
-    print('data',data)
+    # print('data',data)
 
 @sio.event
 def disconnect(sid):
     print('disconnect ', sid)
+    del slaves[sid]
+    
 @sio.on('handshake')
-def on_message(data):
-    print('HandShake', data)
+def on_message(sid,data):
+    print('HandShake', sid,data)
+    slaves[sid]=data
     # sio.emit('message', {'now': 'EURUSD'})
 @sio.on('message')
 def handle_message_event(msg,ggg):
