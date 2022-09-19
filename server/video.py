@@ -61,6 +61,8 @@ hubCont.on("CameraSendCommand", doUserCommand)
 hubCont.start()
 
 try:
+        slaveCameraThread = Thread(target=SlaveCamera.run) 
+        slaveCameraThread.start()
         # (V) TODO looping while true
         while True:
             r=""
