@@ -55,8 +55,8 @@ def handle_message_event(msg,ggg):
     # sio.emit("10","ini data dari server ws")
     #print('received msg from {} : {}'.format(request.remote_addr, str(msg)))
 @sio.event
-def connect(sid, data):
-    print("I'm connected!", sid, data)
+def connect(sid, environ, auth):
+    print("I'm connected!", sid, environ)
 @sio.event
 def disconnect(sid, data):
     print("I'm disconnected!",sid, data)
