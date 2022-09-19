@@ -49,7 +49,7 @@ def disconnect(sid):
     print('disconnect ', sid)
     if (sid in slaves):
     	 
-        url_add = URLSERVER+'/api/Sensor/Disconnect'
+        url_add = URLSERVER+'/api/SensorCrud/Disconnect'
         send = requests.post(url_add, json = {"Id":slaves[sid]})
         print(send)
         del slaves[sid]
@@ -59,7 +59,7 @@ def handshake(sid,dd):
     print('HandShake', dd,sid)
     if(sid not in slaves):
         slaves[sid]=dd['Id']
-        url_add = URLSERVER+'/api/Sensor/Connect'
+        url_add = URLSERVER+'/api/SensorCrud/Connect'
         send = requests.post(url_add, json = dd)
         print(send)
 
