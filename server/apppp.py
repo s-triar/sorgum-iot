@@ -47,12 +47,22 @@ def connect(sid, environ, auth):
 @sio.event
 def disconnect(sid):
     print('disconnect ', sid)
-    del slaves[sid]
+    if (sid in slaves):
+    	 
+        url_add = URLSERVER+'/api/Sensor/Disconnect'
+        send = requests.post(url_add, json = {"Id":slaves[sid]})
+        print(send)
+        del slaves[sid]
     
 @sio.on("handshake")
-def handshake(dd,sid,data):
-    print('HandShake', dd,sid,data)
-    slaves[sid]=data
+def handshake(sid,dd):
+    print('HandShake', dd,sid)
+    if(sid not in slaves):
+        slaves[sid]=dd['Id']
+        url_add = URLSERVER+'/api/Sensor/Connect'
+        send = requests.post(url_add, json = dd)
+        print(send)
+
     # sio.emit('message', {'now': 'EURUSD'})
 @sio.on('message')
 def handle_message_event(msg,ggg):
