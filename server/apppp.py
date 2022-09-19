@@ -5,20 +5,47 @@ import eventlet
 from engineio.async_drivers import gevent
 from flask import Flask, request
 import requests
+import logging
+from signalrcore.hub_connection_builder import HubConnectionBuilder
+
+URLSERVER="https://412d-140-0-40-217.ngrok.io"
+IDMINIPC=1
+
+# server_url = URLSERVER+"/DataParamSensorHub"
+# handler = logging.StreamHandler()
+# handler.setLevel(logging.DEBUG)
+# hub_connection = HubConnectionBuilder()\
+#             .with_url(server_url,options={"verify_ssl": False, "headers": {
+#                     'user-agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36",\
+#                     'content-type':'application/json',\
+#                 }})\
+#           .configure_logging(logging.DEBUG,socket_trace=True, handler=handler)\
+#             .configure_logging(logging.DEBUG)\
+#             .with_automatic_reconnect({
+#                 "type": "raw",
+#                 "keep_alive_interval": 10,
+#                 "reconnect_interval": 5,
+#                 "max_attempts": 5
+#             }).build()
+# hub_connection.on_open(lambda : [print("connection opened and handshake received ready to send messages"),hub_connection.send("JoinRoom", [str(IDMINIPC)+'-_-iot'])])
+# hub_connection.on_close(lambda : print("connection closed"))
+# hub_connection.start()
 
 sio = socketio.Server(async_mode="eventlet", cors_allowed_origins='*', engineio_logger=True)
 app = Flask(__name__)
+
+
 
 # this generates the uwsgi-runnable application
 
 @sio.on('handshake')
 def on_message(data):
     print('HandShake', data)
-    sio.emit('message', {'now': 'EURUSD'})
+    # sio.emit('message', {'now': 'EURUSD'})
 @sio.on('message')
 def handle_message_event(msg,ggg):
     print("GGGG",ggg)
-    url_add = 'https://412d-140-0-40-217.ngrok.io/api/DatasCrud/AddData'
+    url_add = URLSERVER+'/api/DatasCrud/AddData'
     send = requests.post(url_add, json = ggg)
 
     print(send)
@@ -27,7 +54,12 @@ def handle_message_event(msg,ggg):
     #     id = i
     # sio.emit("10","ini data dari server ws")
     #print('received msg from {} : {}'.format(request.remote_addr, str(msg)))
-
+@sio.event
+def connect(sid, data):
+    print("I'm connected!", sid, data)
+@sio.event
+def disconnect(sid, data):
+    print("I'm disconnected!",sid, data)
 my_wsgi = socketio.WSGIApp(sio,app)
 app = socketio.Middleware(sio, my_wsgi)
 
