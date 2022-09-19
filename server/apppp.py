@@ -18,7 +18,7 @@ def on_message(data):
 @sio.on('message')
 def handle_message_event(msg,ggg):
     print("GGGG",ggg)
-    url_add = 'https://e076-140-0-40-217.ap.ngrok.io/api/DatasCrud/AddData'
+    url_add = 'https://412d-140-0-40-217.ngrok.io/api/DatasCrud/AddData'
     send = requests.post(url_add, json = ggg)
 
     print(send)
