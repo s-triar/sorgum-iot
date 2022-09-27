@@ -17,9 +17,9 @@ encoded_array = encode_ndarray(any_numpy_array)
 # resp = requests.post(endpoint, data=encoded_array,headers=headers)
 
 
-vid= cv2.VideoCapture(0)
+# vid= cv2.VideoCapture(0)
 
-server_url = "https://37ca-140-0-40-217.ap.ngrok.io/Stream"
+server_url = "https://localhost:7219/DataParamSensorHub"
 handler = logging.StreamHandler()
 handler.setLevel(logging.DEBUG)
 hub_connection = HubConnectionBuilder()\
@@ -35,16 +35,16 @@ hub_connection = HubConnectionBuilder()\
                 "reconnect_interval": 5,
                 "max_attempts": 5
             }).build()
-hub_connection.on_open(lambda : [print("connection opened and handshake received ready to send messages"),hub_connection.send('Strem', ['dari aku'])])
+hub_connection.on_open(lambda : [print("connection opened and handshake received ready to send messages"),hub_connection.send('JoinRoom', "3-_-iot")])
 hub_connection.on_close(lambda : print("connection closed"))
 hub_connection.start()
 # hub_connection.send('Strem', [{'g':'dari aku'}])
 try:
-  ret, frame = vid.read()
-  frame = cv2.resize(frame,(128,128))
-  retval, buffer = cv2.imencode('.jpg', frame)
-  jpg_as_text = base64.b64encode(buffer)
-  hub_connection.on_open(lambda : [print("connection opened and handshake received ready to send messages"),hub_connection.send("Stremc", [jpg_as_text])])
+  # ret, frame = vid.read()
+  # frame = cv2.resize(frame,(128,128))
+  # retval, buffer = cv2.imencode('.jpg', frame)
+  # jpg_as_text = base64.b64encode(buffer)
+  # hub_connection.on_open(lambda : [print("connection opened and handshake received ready to send messages"),hub_connection.send("Stremc", [jpg_as_text])])
 #   hub_connection.on_close(lambda : print("connection closed"))
 #   hub_connection.on("UserSendCommand", print)
   hub_connection.start()

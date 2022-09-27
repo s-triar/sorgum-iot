@@ -8,7 +8,7 @@ import requests
 import logging
 from signalrcore.hub_connection_builder import HubConnectionBuilder
 
-URLSERVER="https://412d-140-0-40-217.ngrok.io"
+URLSERVER="https://9a79-114-4-222-38.ngrok.io"
 IDMINIPC=1
 slaves={}
 
@@ -80,15 +80,17 @@ hub_connection = HubConnectionBuilder()\
             }).build()
 hub_connection.on_open(lambda : [print("connection opened and handshake received ready to send messages"),hub_connection.send("JoinRoom", [str(IDMINIPC)+'-_-iot'])])
 hub_connection.on_close(lambda : print("connection closed"))
-if __name__ == '__main__':
-    try:
-        hub_connection.start()
+hub_connection.start()
+eventlet.wsgi.server(eventlet.listen(('', 5000)), app)
+# if __name__ == '__main__':
+#     try:
     
-        eventlet.wsgi.server(eventlet.listen(('', 5000)), app)
-        
-    except Exception as e:
-        hub_connection.stop()
-        print(e)
+#         while True:
+#             r=""
+
+#     except Exception as e:
+#         hub_connection.stop()
+#         print(e)
 
 # if __name__ == '__main__':
     # socketio.run(app, host="0.0.0.0", port=5000, debug=True)
