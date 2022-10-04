@@ -1,3 +1,4 @@
 server/venv
 server/__pycache__
 server_js/node_modules
+webrtc_client/venv
