@@ -41,7 +41,7 @@ def create_local_tracks(play_from, decode):
         player = MediaPlayer(play_from, decode=decode)
         return player.audio, player.video
     else:
-        options = {"framerate": "30", "video_size": "320x240"}
+        options = {"framerate": "30", "video_size": "320x240", 'rtbufsize': '240M'}
         if relay is None:
             if platform.system() == "Darwin":
                 webcam = MediaPlayer(
@@ -68,9 +68,10 @@ def force_codec(pc, sender, forced_codec):
         [codec for codec in codecs if codec.mimeType == forced_codec]
     )
 
-async def offer(request):
-    print(request)
-    params = await request.json()
+async def offer(hub, params):
+    # print(request)
+    # params = await request.json()
+    # print(params)
     offer = RTCSessionDescription(sdp=params["sdp"], type=params["type"])
 
     pc = RTCPeerConnection()
@@ -82,6 +83,14 @@ async def offer(request):
         if pc.connectionState == "failed":
             await pc.close()
             pcs.discard(pc)
+
+
+    await pc.setRemoteDescription(offer)
+
+    answer = await pc.createAnswer()
+    await pc.setLocalDescription(answer)
+    hub.send('AnswerReqCamera', ["1", pc.localDescription.sdp, pc.localDescription.type])
+
 
     # open media source
     audio, video = create_local_tracks(
@@ -102,9 +111,6 @@ async def offer(request):
         # elif args.play_without_decoding:
         #     raise Exception("You must specify the video codec using --video-codec")
 
-    await pc.setRemoteDescription(offer)
 
-    answer = await pc.createAnswer()
-    await pc.setLocalDescription(answer)
 
-    return json.dumps({"sdp": pc.localDescription.sdp, "type": pc.localDescription.type})
+    # return pc.localDescription.sdp, pc.localDescription.type

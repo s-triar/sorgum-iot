@@ -17,7 +17,7 @@ URL_API = config['API']['url']
 PAYLOAD_LOGIN = {'Code':config['IoTAuth']['code'],'Password':config['IoTAuth']['password']}
 
 TOKEN=""
-ID_RPI=None
+ID_RPI=1
 HEADERS = {
     'user-agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36",
     'content-type':'application/json',
@@ -59,3 +59,7 @@ def submit_esp_connect(data):
     res = requests.post(uri, headers=header, json = data)
     print(res.reason)
     
+def req_rtc_answer(data):
+    res = requests.post("http://localhost:8080/offer", json = data)
+    print(res.json())
+    return res.json()
