@@ -15,6 +15,11 @@ app = Flask(__name__)
 
 SLAVES={}
 
+def set_esp_ids():
+    temp = []
+    for s in SLAVES:
+        temp.append(SLAVES[s])
+    api.ID_ESPS = temp
 
 # this generates the uwsgi-runnable application
 @sio.event
@@ -22,6 +27,7 @@ def connect(sid, environ, auth):
     print('connect ', sid)
     print('environ',environ)
     print('auth',auth)
+    set_esp_ids()
     # print('data',data)
 
 @sio.event
@@ -30,6 +36,7 @@ def disconnect(sid):
     if (sid in SLAVES):
         api.submit_esp_disconnect(SLAVES[sid])
         del SLAVES[sid]
+    set_esp_ids()
     
 @sio.on("handshake")
 def handshake(sid,dd):
