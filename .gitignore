@@ -3,3 +3,4 @@ server/__pycache__
 server/libs/__pycache__
 server_js/node_modules
 webrtc_client/venv
+.idea
