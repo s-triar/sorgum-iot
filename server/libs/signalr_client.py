@@ -4,7 +4,7 @@ import libs.api as api
 # import libs.webcam as wc
 import json
 
-from server.libs.api import ID_ESPS
+# from server.libs.api import ID_ESPS
 # from asyncio import run
 # ===========================================================================================
 # ===     This file handle signalr calling/event from raspberry pi to server              ===

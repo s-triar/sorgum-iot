@@ -17,7 +17,7 @@ URL_API = config['API']['url']
 PAYLOAD_LOGIN = {'Code':config['IoTAuth']['code'],'Password':config['IoTAuth']['password']}
 
 TOKEN=""
-ID_RPI=1
+ID_RPI=None
 ID_ESPS=[]
 HEADERS = {
     'user-agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36",
