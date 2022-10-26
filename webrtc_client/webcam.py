@@ -8,7 +8,7 @@ import ssl
 
 from aiohttp import web
 
-from aiortc import RTCPeerConnection, RTCSessionDescription
+from aiortc import RTCPeerConnection, RTCSessionDescription, RTCConfiguration, RTCIceServer
 from aiortc.contrib.media import MediaPlayer, MediaRelay
 from aiortc.rtcrtpsender import RTCRtpSender
 
@@ -67,8 +67,11 @@ async def javascript(request):
 async def offer(request):
     params = await request.json()
     offer = RTCSessionDescription(sdp=params["sdp"], type=params["type"])
-
-    pc = RTCPeerConnection()
+    TURN = RTCIceServer("turn:turn.testazure.online:3478?transport=udp", "test", "test123")
+    STUN = RTCIceServer("stun:stun.testazure.online:3478?transport=udp",None,None)
+    cfg = RTCConfiguration([STUN,TURN])
+    pc = RTCPeerConnection(configuration=cfg)
+    pc.addTransceiver(trackOrKind='video',direction='sendonly')
     pcs.add(pc)
 
     @pc.on("connectionstatechange")

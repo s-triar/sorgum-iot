@@ -10,15 +10,15 @@ import json
 # ===     This file handle signalr calling/event from raspberry pi to server              ===
 # ===========================================================================================
 
-# def do_signaling_rtc(p):
-#     print(p[0])
-#     # print(sdp,type,"============================================================================")
-#     # sdp, type = await wc.offer(hub_connection, p[0])
-#     res = api.req_rtc_answer(p[0])
-#     print("-------------------------------------------------")
-#     # print(sdp)
-#     # print(type)
-#     hub_connection.send('AnswerReqCamera', ["1", res['sdp'],res['type']])
+def do_signaling_rtc(p):
+    print(p[0])
+    # print(sdp,type,"============================================================================")
+    # sdp, type = await wc.offer(hub_connection, p[0])
+    res = api.req_rtc_answer(p[0])
+    print("-------------------------------------------------")
+    # print(sdp)
+    # print(type)
+    hub_connection.send('AnswerReqCamera', ["1", res['sdp'],res['type']])
 
 server_url = api.URL_API+"/FarmingHub"
 handler = logging.StreamHandler()
@@ -43,6 +43,7 @@ def generate_data():
     temp = {}
     temp['Id']=str(api.ID_RPI)+'_RPI'
     temp['ESPIds']=api.ID_ESPS
+    print(json.dump(temp))
     return json.dump(temp)
 
 hub_connection.on_open(lambda : [
@@ -50,8 +51,9 @@ hub_connection.on_open(lambda : [
 
     # hub_connection.send("RPIJoinRoom", [str(api.ID_RPI)+'_RPI'])
 
+    hub_connection.send("RPIJoinRoom", [str(api.ID_RPI)+'_RPI', api.ID_ESPS])
     
-    hub_connection.send("RPIJoinRoom", [generate_data()])
+    # hub_connection.send("RPIJoinRoom", [generate_data()]) # ga bisa ngirim obj
     
     ])
 
@@ -67,7 +69,7 @@ def coba2(c):
     print(c)
 hub_connection.on_error(lambda data: print(f"An exception was thrown closed{data.error}"))
 hub_connection.on_close(lambda : print("connection closed"))
-# hub_connection.on("ReqActivatingCamera", lambda x: do_signaling_rtc(x))
+hub_connection.on("ReqActivatingCamera", lambda x: do_signaling_rtc(x))
 # hub_connection.on("coba_terima", lambda x: coba2(x))
 
 

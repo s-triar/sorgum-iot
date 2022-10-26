@@ -17,7 +17,7 @@ def generate(server,ttype,transport,secret):
 
     digest = hmac.digest(bytes(secret,'utf-8'),bytes(username,'utf-8'),hashlib.sha1)
     credential = base64.b64encode(digest)
-
+    
     uri = '%s:%s:3478?transport=%s' % (ttype,server,transport)
 
     return {
