@@ -39,19 +39,20 @@ hub_connection = HubConnectionBuilder()\
             # .configure_logging(logging.DEBUG,socket_trace=True, handler=handler)\
                 
 
-def generate_data():
-    temp = {}
-    temp['Id']=str(api.ID_RPI)+'_RPI'
-    temp['ESPIds']=api.ID_ESPS
-    return json.dump(temp)
+# def generate_data():
+#     temp = {}
+#     temp['Id']=str(api.ID_RPI)+'_RPI'
+#     temp['ESPIds']=api.ID_ESPS
+#     return json.dump(temp)
 
 hub_connection.on_open(lambda : [
     print("connection opened and handshake received ready to send messages"),
 
     # hub_connection.send("RPIJoinRoom", [str(api.ID_RPI)+'_RPI'])
+    hub_connection.send("RPIJoinRoom", [str(api.ID_RPI)+'_RPI', api.ID_ESPS])
 
     
-    hub_connection.send("RPIJoinRoom", [generate_data()])
+    # hub_connection.send("RPIJoinRoom", [generate_data()])
     
     ])
 
