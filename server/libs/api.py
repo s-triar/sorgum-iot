@@ -18,6 +18,7 @@ PAYLOAD_LOGIN = {'Code':config['IoTAuth']['code'],'Password':config['IoTAuth']['
 
 TOKEN=""
 ID_RPI=None
+ID_REGION=None
 ID_ESPS=[]
 HEADERS = {
     'user-agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36",
@@ -29,11 +30,15 @@ def login():
     res =  requests.post(uri,headers=HEADERS, verify=False, data=json.dumps(PAYLOAD_LOGIN))
     if(res.status_code==200):
         resBody = res.json()
+        print(resBody["AccessToken"])
         global TOKEN
-        TOKEN = 'Bearer '+resBody['accessToken']
-        decoded = jwt.decode(resBody['accessToken'], options={"verify_signature": False}) # works in PyJWT >= v2.0
+        TOKEN = 'Bearer '+resBody['AccessToken']
+        decoded = jwt.decode(resBody['AccessToken'], options={"verify_signature": False}) # works in PyJWT >= v2.0
+        print(decoded)
         global ID_RPI
         ID_RPI=decoded['sub']
+        global ID_REGION
+        ID_REGION=decoded["id_region"]
         HEADERS['Authorization']=TOKEN
         return True
     return False
